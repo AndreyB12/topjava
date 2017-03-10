@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.model.UserMealWithExceed;
 
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -63,23 +64,16 @@ public class UserMealsUtil {
 
         List<UserMealWithExceed> listUserME = new ArrayList<>();
         Map<LocalDate, Integer> dayCalories = new HashMap<>();
-        List<UserMeal> listUserMeal = new ArrayList<>();
 
 
         mealList.stream()
                 .filter(userMeal -> {
                     dayCalories.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (v1, v2) -> v1 + v2);
                     return TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(), startTime, endTime);
-                })
-                .forEach(userMeal -> {
-                    boolean exceeded = false;
-                    if (dayCalories.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay) exceeded = true;
+                }).collect(Collectors.toList()).forEach(userMeal -> listUserME.add((dayCalories.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay) ?
+                new UserMealWithExceed(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), true) :
+                new UserMealWithExceed(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), false)));
 
-                    listUserME.add(new UserMealWithExceed(userMeal.getDateTime()
-                            , userMeal.getDescription()
-                            , userMeal.getCalories()
-                            , exceeded));
-                });
 
         return listUserME;
     }
