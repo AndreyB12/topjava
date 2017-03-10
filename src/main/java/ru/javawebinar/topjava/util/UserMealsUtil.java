@@ -3,11 +3,8 @@ package ru.javawebinar.topjava.util;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 /**
  * GKislin
@@ -24,12 +21,70 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,20,0), "Ужин", 510)
         );
         getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
-//        .toLocalDate();
-//        .toLocalTime();
+   //     test();
     }
 
-    public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO return filtered list with correctly exceeded field
-        return null;
+    private static void test() {
+        List<UserMeal> mealList1 = new ArrayList<>();
+        List<UserMeal> mealList2 = new ArrayList<>();
+
+        for (int i = 0; i < 100_000; i++) {
+            mealList1.add(new UserMeal(LocalDateTime.ofEpochSecond(i * 60 * 60, 0, ZoneOffset.UTC), "Завтрак", 500));
+        }
+        for (int i = 0; i < 10_000_000; i++) {
+            mealList2.add(new UserMeal(LocalDateTime.ofEpochSecond(1000000000 + i * 60 * 60, 0, ZoneOffset.UTC), "Завтрак", 500));
+        }
+
+        durationOfTest(mealList1);//preheating
+
+        long duration = 0;
+        for (int i = 0; i < 10; i++) {
+            duration += durationOfTest(mealList1);
+        }
+        System.out.println(duration / 10);
+
+        duration = 0;
+        for (int i = 0; i < 10; i++) {
+            duration += durationOfTest(mealList2);
+        }
+        System.out.println(duration / 10);
+    }
+
+    private static long durationOfTest(List<UserMeal> listMeal) {
+        long sTime, eTime, duration = 0;
+        sTime = System.nanoTime();
+        getFilteredWithExceeded(listMeal, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
+        eTime = System.nanoTime();
+        duration = (eTime - sTime) / 1_000_000;
+        return duration;
+    }
+
+    public static List<UserMealWithExceed> getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+
+        List<UserMealWithExceed> listUserME = new ArrayList<>();
+        Map<LocalDate, Integer> dayCalories = new HashMap<>();
+        List<UserMeal> listUserMeal = new ArrayList<>();
+
+        for (UserMeal userMeal : mealList) {
+            LocalDate mealDate = userMeal.getDateTime().toLocalDate();
+
+            dayCalories.merge(mealDate, userMeal.getCalories(), (v1, v2) -> v1 + v2);
+
+            if (TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(), startTime, endTime))
+                listUserMeal.add(userMeal);
+
+        }
+
+        for (UserMeal userMeal : listUserMeal) {
+            LocalDate mealDate = userMeal.getDateTime().toLocalDate();
+            boolean exceeded = false;
+            if (dayCalories.get(mealDate) > caloriesPerDay) exceeded = true;
+
+            listUserME.add(new UserMealWithExceed(userMeal.getDateTime()
+                    , userMeal.getDescription()
+                    , userMeal.getCalories()
+                    , exceeded));
+        }
+        return listUserME;
     }
 }
