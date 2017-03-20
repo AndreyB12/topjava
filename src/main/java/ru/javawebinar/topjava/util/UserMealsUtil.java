@@ -21,31 +21,36 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,20,0), "Ужин", 510)
         );
         getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
-     test();
+   //     test();
     }
 
     private static void test() {
         List<UserMeal> mealList1 = new ArrayList<>();
         List<UserMeal> mealList2 = new ArrayList<>();
 
+        System.out.println("100K List filling");
         for (int i = 0; i < 100_000; i++) {
             mealList1.add(new UserMeal(LocalDateTime.ofEpochSecond(i * 60 * 60, 0, ZoneOffset.UTC), "Завтрак", 500));
         }
+
+        System.out.println("10M List filling");
         for (int i = 0; i < 10_000_000; i++) {
             mealList2.add(new UserMeal(LocalDateTime.ofEpochSecond(1000000000 + i * 60 * 60, 0, ZoneOffset.UTC), "Завтрак", 500));
         }
-
+        System.out.println("Preheating");
         durationOfTest(mealList1);//preheating
 
         long duration = 0;
         for (int i = 0; i < 10; i++) {
             duration += durationOfTest(mealList1);
+            System.out.println("1." + (i + 1));
         }
         System.out.println(duration / 10);
 
         duration = 0;
         for (int i = 0; i < 10; i++) {
             duration += durationOfTest(mealList2);
+            System.out.println("2." + (i + 1));
         }
         System.out.println(duration / 10);
     }
