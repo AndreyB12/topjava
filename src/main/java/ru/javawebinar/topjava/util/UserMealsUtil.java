@@ -77,6 +77,7 @@ public class UserMealsUtil {
 
         List<UserMealWithExceed> listUserME =
                 mealList.parallelStream()
+                        .unordered()
                         .filter(userMeal -> TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(), startTime, endTime))
                         .map(m -> new UserMealWithExceed(m.getDateTime()
                                 , m.getDescription()
