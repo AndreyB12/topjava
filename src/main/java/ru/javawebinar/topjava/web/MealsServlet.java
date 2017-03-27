@@ -70,10 +70,11 @@ public class MealsServlet extends HttpServlet {
                         String dscr = request.getParameter("description");
                         int calories = Integer.parseInt(request.getParameter("calories"));
                         String dt = request.getParameter("datetime");
-                        LocalDateTime dateTime = LocalDateTime.parse(dt,DateTimeFormatter.ISO_DATE_TIME);
-                        storage.add(dateTime,dscr,calories);
+                        LocalDateTime dateTime = LocalDateTime.parse(dt, DateTimeFormatter.ISO_DATE_TIME);
+                        storage.add(dateTime, dscr, calories);
                     } catch (Exception e) {
                     }
+                    LOG.debug("new Meal added.");
                     break;
                 case "edit":
                     try {
@@ -81,13 +82,14 @@ public class MealsServlet extends HttpServlet {
                         String dscr = request.getParameter("description");
                         int calories = Integer.parseInt(request.getParameter("calories"));
                         String dt = request.getParameter("datetime");
-                        LocalDateTime dateTime = LocalDateTime.parse(request.getParameter("datetime"),DateTimeFormatter.ISO_DATE_TIME);
-                        storage.edit(id,dateTime,dscr,calories);
+                        LocalDateTime dateTime = LocalDateTime.parse(request.getParameter("datetime"), DateTimeFormatter.ISO_DATE_TIME);
+                        storage.edit(id, dateTime, dscr, calories);
+                        LOG.debug("Meal edited. id = " + id);
                     } catch (Exception e) {
                     }
                     break;
             }
-            response.sendRedirect("meals");
+        response.sendRedirect("meals");
     }
 
 }

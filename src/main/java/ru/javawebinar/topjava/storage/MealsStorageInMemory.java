@@ -46,7 +46,6 @@ public class MealsStorageInMemory implements MealsStorage {
     public void edit(long id, LocalDateTime dateTime, String description, int calories) {
         if (id == 0l)
             id = lastId.incrementAndGet();
-        if (meals.containsKey(id))
             meals.put(id, new Meal(id, dateTime, description, calories));
     }
 

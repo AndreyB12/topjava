@@ -9,43 +9,56 @@
         #mealstable {
             border-collapse: collapse;
             border-spacing: 0;
-            border-color: #ccc;
         }
 
         #mealstable th {
             font-family: Arial, sans-serif;
-            font-size: 14px;
-            font-weight: normal;
+            font-size: 16px;
+            font-weight: bold;
             padding: 10px 5px;
-            border-bottom: 1px solid #ddd;
+            border: 1px solid #a8a8a8;
             overflow: hidden;
             word-break: normal;
-            border-color: #ccc;
             color: #333;
-            background-color: #f0f0f0;
+            background-color: #ababab;
         }
 
         #mealstable td {
             font-family: Arial, sans-serif;
-            font-size: 14px;
+            font-size: 16px;
             padding: 10px 5px;
-            border-bottom: 1px solid #ddd;
+            border: 1px solid #a8a8a8;
             overflow: hidden;
             word-break: normal;
-            border-color: #ccc;
-            color: #333;
+            /*color: #333;*/
         }
 
-        #mealstable td.id {
+        #mealstable td.calories {
             text-align: center;
         }
-
-        #mealstable tr.exd {
-            background-color: #ff4f56;
+        #mealstable td.dscr {
+            text-align: left;
         }
 
-        #mealstable tr.nexd {
-            background-color: #348b37;
+        #mealstable tr.exdOdd {
+            color: #ff4f56;
+            background-color: #d7d7d7;
+        }
+
+        #mealstable tr.exdEven {
+            color: #ff4f56;
+            background-color: #e9e9e9;
+
+        }
+
+        #mealstable tr.nrmOdd {
+            color: #348b37;
+            background-color: #d7d7d7;
+        }
+
+        #mealstable tr.nrmEven {
+            color: #348b37;
+            background-color: #e9e9e9;
         }
 
     </style>
@@ -60,17 +73,19 @@
 <table id="mealstable">
     <tr>
         <%--<th width="60">ID</th>--%>
-        <th width="120">DateTime</th>
+        <th width="130">DateTime</th>
         <th width="240">Descriptor</th>
         <th width="120">Calories</th>
         <th width="60"></th>
         <th width="60"></th>
     </tr>
+    <c:set var="i" scope="page" value="${0}"/>
     <c:forEach items="${listMeals}" var="meal">
-        <tr class=${meal.exceed ? 'exd':'nexd'}>
+        <c:set var="i" scope="page" value="${i+1}"/>
+        <tr class=${i%2==0?(meal.exceed ? 'exdEven':'nrmEven'):(meal.exceed ? 'exdOdd':'nrmOdd')}>
             <td><javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-            <td>${meal.description}</td>
-            <td>${meal.calories}</td>
+            <td class = "dscr">${meal.description}</td>
+            <td class="calories">${meal.calories}</td>
             <td>
                 <form action='meals' method="get">
                     <input type="hidden" name="action" value="delete"/>
