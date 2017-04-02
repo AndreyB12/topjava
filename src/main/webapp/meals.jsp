@@ -19,6 +19,16 @@
 <section>
     <h2><a href="index.html">Home</a></h2>
     <h2>Meal list</h2>
+
+    <form action="meals">
+        <input type="date" name="startDate">
+        <input type="date" name="endDate">
+        <br/>
+        <input type="time" name="startTime">
+        <input type="time" name="endTime">
+        <input type="submit" value="Выбрать">
+    </form>
+
     <a href="meals?action=create">Add Meal</a>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">

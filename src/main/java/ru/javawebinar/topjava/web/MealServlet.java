@@ -44,6 +44,7 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String action = request.getParameter("action");
 
         switch (action == null ? "all" : action) {
@@ -64,7 +65,10 @@ public class MealServlet extends HttpServlet {
             default:
                 LOG.info("getAll");
                 request.setAttribute("meals",
-                        controller.getByDatesAndTimes(null, null, null, null));
+                        controller.getByDatesAndTimes(request.getParameter("startDate")
+                                , request.getParameter("endDate")
+                                , request.getParameter("startTime")
+                                , request.getParameter("endTime")));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

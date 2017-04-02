@@ -9,7 +9,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.util.exception.AuthorizationError;
+import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.web.MealServlet;
 
 import java.time.LocalDate;
@@ -26,10 +26,10 @@ public class MealRestController {
 
 
     public List<MealWithExceed> getByDatesAndTimes(String startDate, String endDate, String startTime, String endTime) {
-        LocalDate sLD = startDate == null ? LocalDate.MIN : LocalDate.parse(startDate);
-        LocalDate eLD = endDate == null ? LocalDate.MAX : LocalDate.parse(endDate);
-        LocalTime sLT = startTime == null ? LocalTime.MIN : LocalTime.parse(startTime);
-        LocalTime eLT = endTime == null ? LocalTime.MAX : LocalTime.parse(endTime);
+        LocalDate sLD = startDate == null || startDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(startDate);
+        LocalDate eLD = endDate == null || endDate.isEmpty() ? LocalDate.MAX : LocalDate.parse(endDate);
+        LocalTime sLT = startTime == null || startTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(startTime);
+        LocalTime eLT = endTime == null || endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime);
 
 
         return MealsUtil.getFilteredWithExceeded(
@@ -38,9 +38,8 @@ public class MealRestController {
     }
 
     public void delete(int id) {
-        Meal meal = service.get(id);
-        if (meal.getUserId() == AuthorizedUser.id())
-            service.delete(id);
+
+        service.delete(AuthorizedUser.id(), id);
     }
 
     public void save(String id, String dateTime, String description, String calories) {
@@ -49,17 +48,14 @@ public class MealRestController {
                 description,
                 Integer.valueOf(calories), AuthorizedUser.id());
         LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        if (!meal.isNew() && service.get(meal.getId()).getUserId() != meal.getUserId())
-            throw new AuthorizationError("Attempt to edit foreign Meal, meal=" + meal + ", userId=" + AuthorizedUser.id());
+        if (!meal.isNew())
+            ValidationUtil.checkNotFoundWithId(service.get(AuthorizedUser.id(), meal.getId()), meal.getId());
         service.save(meal);
 
     }
 
     public Meal get(int id) {
-        Meal meal = service.get(id);
-        if (meal.getUserId() != AuthorizedUser.id())
-            throw new AuthorizationError("Attempt to get foreign Meal, meal=" + meal + ", userId=" + AuthorizedUser.id());
-        return meal;
+        return service.get(AuthorizedUser.id(), id);
     }
 
     public Meal getNew() {

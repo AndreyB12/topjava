@@ -34,16 +34,16 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public void delete(int id) throws NotFoundException {
+    public void delete(int userId, int id) throws NotFoundException {
         LOG.info(String.format("Service, delete, id=%s", id));
 
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(userId, id), id);
     }
 
     @Override
-    public Meal get(int id) throws NotFoundException {
+    public Meal get(int userId, int id) throws NotFoundException {
         LOG.info(String.format("Service, get, id=%s", id));
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(repository.get(userId, id), id);
     }
 
     @Override
