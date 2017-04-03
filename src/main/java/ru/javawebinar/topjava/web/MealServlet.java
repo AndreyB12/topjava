@@ -24,12 +24,18 @@ public class MealServlet extends HttpServlet {
 
     private MealRestController controller;
 
+    private ConfigurableApplicationContext appCtx;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
-            this.controller = appCtx.getBean(MealRestController.class);
-        }
+        this.appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        this.controller = appCtx.getBean(MealRestController.class);
+    }
+
+    @Override
+    public void destroy() {
+        this.appCtx.close();
     }
 
     @Override
@@ -65,7 +71,7 @@ public class MealServlet extends HttpServlet {
             default:
                 LOG.info("getAll");
                 request.setAttribute("meals",
-                        controller.getByDatesAndTimes(request.getParameter("startDate")
+                        controller.getAll(request.getParameter("startDate")
                                 , request.getParameter("endDate")
                                 , request.getParameter("startTime")
                                 , request.getParameter("endTime")));

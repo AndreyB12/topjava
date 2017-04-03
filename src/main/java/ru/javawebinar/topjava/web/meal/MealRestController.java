@@ -25,7 +25,11 @@ public class MealRestController {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
 
-    public List<MealWithExceed> getByDatesAndTimes(String startDate, String endDate, String startTime, String endTime) {
+    public List<MealWithExceed> getAll() {
+        return getAll(null, null, null, null);
+    }
+
+    public List<MealWithExceed> getAll(String startDate, String endDate, String startTime, String endTime) {
         LocalDate sLD = startDate == null || startDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(startDate);
         LocalDate eLD = endDate == null || endDate.isEmpty() ? LocalDate.MAX : LocalDate.parse(endDate);
         LocalTime sLT = startTime == null || startTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(startTime);
