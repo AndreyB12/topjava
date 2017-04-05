@@ -80,6 +80,12 @@ public class User extends NamedEntity {
         return password;
     }
 
+    public static int compareByNameAndEmail(User u1, User u2) {
+        return u1.getName().equalsIgnoreCase(u2.getName()) ?
+                u1.getEmail().compareToIgnoreCase(u2.getEmail())
+                : u1.getName().compareToIgnoreCase(u2.getName());
+    }
+
     @Override
     public String toString() {
         return "User (" +
