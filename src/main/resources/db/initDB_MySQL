@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS meals;
 
 CREATE TABLE `users` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -20,6 +21,22 @@ CREATE TABLE `user_roles` (
   INDEX `user_roles_idx` (`user_id` ASC, `role` ASC),
   CONSTRAINT `user_id`
   FOREIGN KEY (`user_id`)
-  REFERENCES `topjava_db`.`users` (`id`)
+  REFERENCES `users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE `meals` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `dateTime` DATETIME NOT NULL DEFAULT now(),
+  `description` VARCHAR(255) NOT NULL,
+  `calories` INT NOT NULL,
+  `userId` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  INDEX `userId_idx` (`userId` ASC),
+  CONSTRAINT `userId`
+  FOREIGN KEY (`userId`)
+  REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
