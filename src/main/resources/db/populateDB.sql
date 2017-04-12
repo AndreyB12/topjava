@@ -6,10 +6,12 @@ DELETE FROM meals;
 INSERT INTO users (name, email, password)
 VALUES ('User', 'user@yandex.ru', 'password');
 
-set @userId := (select id from users where email = 'user@yandex.ru' limit 1);
+
 
 INSERT INTO users (name, email, password)
 VALUES ('Admin', 'admin@gmail.com', 'admin');
+
+set @userId := (select id from users where email = 'user@yandex.ru' limit 1);
 set @adminId := (select  id from users where email = 'admin@gmail.com' limit 1);
 
 
