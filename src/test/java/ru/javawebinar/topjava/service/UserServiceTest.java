@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.DbPopulator;
@@ -39,6 +40,7 @@ public class UserServiceTest {
     @Before
     public void setUp() throws Exception {
         dbPopulator.execute();
+        UserTestData.init(service);
     }
 
     @Test
@@ -56,18 +58,18 @@ public class UserServiceTest {
 
     @Test
     public void testDelete() throws Exception {
-        service.delete(USER_ID);
+        service.delete(userId);
         MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), service.getAll());
     }
 
     @Test(expected = NotFoundException.class)
     public void testNotFoundDelete() throws Exception {
-        service.delete(1);
+        service.delete(0);
     }
 
     @Test
     public void testGet() throws Exception {
-        User user = service.get(USER_ID);
+        User user = service.get(userId);
         MATCHER.assertEquals(USER, user);
     }
 
@@ -94,6 +96,6 @@ public class UserServiceTest {
         updated.setName("UpdatedName");
         updated.setCaloriesPerDay(330);
         service.update(updated);
-        MATCHER.assertEquals(updated, service.get(USER_ID));
+        MATCHER.assertEquals(updated, service.get(userId));
     }
 }
