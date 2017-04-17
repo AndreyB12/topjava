@@ -40,7 +40,7 @@ public class UserServiceTest {
     @Before
     public void setUp() throws Exception {
         dbPopulator.execute();
-        UserTestData.init(service);
+        UserTestData.init();
     }
 
     @Test
@@ -75,7 +75,7 @@ public class UserServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void testGetNotFound() throws Exception {
-        service.get(1);
+        service.get(0);
     }
 
     @Test

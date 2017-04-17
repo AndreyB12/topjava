@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.matcher.ModelMatcher;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -10,10 +11,11 @@ import java.util.Objects;
 import static ru.javawebinar.topjava.model.BaseEntity.START_SEQ;
 
 public class UserTestData {
-
-    public static void init(UserService service) {
-        userId = service.getByEmail("user@yandex.ru").getId();
-        adminId = service.getByEmail("admin@gmail.com").getId();
+    @Autowired
+    private static UserService userService;
+    public static void init() {
+        userId = userService.getByEmail("user@yandex.ru").getId();
+        adminId = userService.getByEmail("admin@gmail.com").getId();
         USER.setId(userId);
         ADMIN.setId(adminId);
     }

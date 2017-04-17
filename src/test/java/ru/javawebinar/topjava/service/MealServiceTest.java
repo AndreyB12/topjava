@@ -29,7 +29,7 @@ public class MealServiceTest {
         SLF4JBridgeHandler.install();
     }
     @Autowired
-    private UserService service;
+    private MealService service;
 
     @Autowired
     private DbPopulator dbPopulator;
@@ -37,12 +37,13 @@ public class MealServiceTest {
     @Before
     public void setUp() throws Exception {
         dbPopulator.execute();
-        UserTestData.init(service);
+        UserTestData.init();
 
     }
 
     @Test
-    public void get() throws Exception {
+    public void testGet() throws Exception {
+        service.get(userId,)
     }
 
     @Test
