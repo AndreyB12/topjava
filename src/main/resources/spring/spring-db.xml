@@ -9,17 +9,12 @@
        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:property-placeholder location="classpath:db/DB_storage.properties" system-properties-mode="OVERRIDE"/>
+    <context:property-placeholder location="classpath:db/JDBC.properties" system-properties-mode="OVERRIDE"/>
     <!--<context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>-->
 
     <context:component-scan base-package="ru.javawebinar.**.repository.jdbc"/>
 
-    <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
-
-    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
-        <jdbc:script location="classpath:db/${jdbc.initLocation}"/>
-        <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
-    </jdbc:initialize-database>
+  <!--  <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>-->
 
     <!--no pooling-->
     <bean id="dataSource"
@@ -29,6 +24,13 @@
         <property name="username" value="${database.username}"/>
         <property name="password" value="${database.password}"/>
     </bean>
+
+    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
+        <jdbc:script location="classpath:db/${jdbc.initLocation}"/>
+        <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
+    </jdbc:initialize-database>
+
+
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
@@ -56,7 +58,7 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
           p:entityManagerFactory-ref="entityManagerFactory"/>
 
-<!--
+<!---->
     <context:component-scan base-package="ru.javawebinar.**.repository.jdbc"/>
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <constructor-arg ref="dataSource"/>
@@ -65,5 +67,5 @@
     <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg ref="dataSource"/>
     </bean>
--->
+
 </beans>
