@@ -24,7 +24,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = "classpath:db/initMySQLDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest {
 
     static {

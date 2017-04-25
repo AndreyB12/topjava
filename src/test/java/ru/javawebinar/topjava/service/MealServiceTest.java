@@ -24,7 +24,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = "classpath:db/initMySQLDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
     static {
@@ -83,6 +83,6 @@ public class MealServiceTest {
     @Test
     public void testGetBetween() throws Exception {
         MATCHER.assertCollectionEquals(Arrays.asList(MEAL3, MEAL2, MEAL1),
-                service.getBetweenDates(LocalDate.of(2015, Month.MAY, 30), LocalDate.of(2015, Month.MAY, 30), USER_ID));
+                service.getBetweenDates(LocalDate.of(2017, Month.JANUARY, 1), LocalDate.of(2017, Month.JANUARY, 1), USER_ID));
     }
 }

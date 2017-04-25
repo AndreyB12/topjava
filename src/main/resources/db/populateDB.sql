@@ -1,5 +1,5 @@
-#DELETE FROM user_roles;
 DELETE FROM users;
+DELETE FROM user_roles;
 DELETE FROM meals;
 
 
