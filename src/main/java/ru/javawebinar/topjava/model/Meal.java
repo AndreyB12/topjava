@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,7 +25,6 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "meals")
-
 public class Meal extends BaseEntity {
 
     public static final String DELETE = "Meal.delete";
@@ -32,7 +32,7 @@ public class Meal extends BaseEntity {
     public static final String GET_ALL = "Meal.getAll";
     public static final String GET_BETWEEN = "Meal.getBetween";
 
-    @NotEmpty
+    @NotNull
     @Column(name = "dateTime", nullable = false, columnDefinition = "timestamp default now()")
     private LocalDateTime dateTime;
 
@@ -40,11 +40,11 @@ public class Meal extends BaseEntity {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "calories", nullable = false, columnDefinition = "int default 2000")
     private int calories;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
