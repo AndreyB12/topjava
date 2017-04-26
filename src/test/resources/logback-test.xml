@@ -12,9 +12,18 @@
     </appender>
 
     <logger name="org.postgresql" level="debug"/>
-    <logger name="com.mysql" level="debug"/>
+    <logger name="com.mysql.jdbc" level="debug"/>
     <logger name="org.springframework.jdbc" level="debug"/>
     <logger name="ru.javawebinar.topjava" level="debug"/>
+    <logger name="org.hibernate" level="debug"/>
+    <logger name="org.hibernate.SQL" level="debug"/>
+    <logger name="org.hibernate.type" level="debug"/>
+   <logger name="org.hibernate.hql.ast.AST" level="debug"/>
+    <logger name="org.hibernate.tool.hbm2ddl" level="debug"/>
+    <logger name="org.hibernate.hql" level="debug"/>
+    <logger name="org.hibernate.cache" level="debug"/>
+    <logger name="org.hibernate.jdbc" level="debug"/>
+    <logger name="org.hibernate.jdbc" level="debug"/>
 
     <root level="WARN">
         <appender-ref ref="console"/>
