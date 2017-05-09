@@ -19,7 +19,7 @@ import java.time.LocalTime;
 //                "m.description=:desc where m.id=:id and m.user.id=:userId")
 })
 @Entity
-@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meals_unique_user_datetime_idx")})
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_Id", "date_time"}, name = "meals_unique_user_datetime_idx")})
 public class Meal extends BaseEntity {
     public static final String ALL_SORTED = "Meal.getAll";
     public static final String DELETE = "Meal.delete";
@@ -38,7 +38,7 @@ public class Meal extends BaseEntity {
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_Id", nullable = false)
     @NotNull
     private User user;
 

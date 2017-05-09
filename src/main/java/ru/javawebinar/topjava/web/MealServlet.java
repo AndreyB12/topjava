@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+//@Profile({"mysql", "datajpa"})
 public class MealServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
@@ -26,7 +27,11 @@ public class MealServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        //   System.setProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME, "mysql, datajpa");
+        springContext = new ClassPathXmlApplicationContext();
+        springContext.getEnvironment().setActiveProfiles("postgres", "datajpa");
+        ((ClassPathXmlApplicationContext)springContext).setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext.refresh();
         mealController = springContext.getBean(MealRestController.class);
     }
 

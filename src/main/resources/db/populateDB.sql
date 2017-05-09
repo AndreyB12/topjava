@@ -1,5 +1,5 @@
-#DELETE FROM user_roles;
 DELETE FROM users;
+DELETE FROM user_roles;
 DELETE FROM meals;
 
 
@@ -24,7 +24,7 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_ADMIN', @adminId);
 
 
-INSERT INTO meals (dateTime, description, calories, userId)
+INSERT INTO meals (dateTime, description, calories, user_Id)
 VALUES ('2017.01.01 10:00', 'Завтрак', 500, @userId),
   ('2017.01.01 13:00', 'Обед', 750, @userId),
   ('2017.01.01 18:00', 'Ужин', 750, @userId),
