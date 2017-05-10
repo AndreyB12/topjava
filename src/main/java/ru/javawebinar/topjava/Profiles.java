@@ -10,12 +10,12 @@ public class Profiles {
             HSQL_DB = "hsqldb",
             MY_SQLDB = "mysql";
 
-    public static final String ACTIVE_DB = MY_SQLDB;
+    public static final String ACTIVE_DB = POSTGRES_DB;
 
     public static final String
             JDBC = "jdbc",
             JPA = "jpa",
             DATA_JPA = "datajpa";
 
-    public static final String REPOSITORY_IMPLEMENTATION = JPA;
+    public static final String REPOSITORY_IMPLEMENTATION = DATA_JPA;
 }
