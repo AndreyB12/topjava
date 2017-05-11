@@ -25,7 +25,7 @@ import static ru.javawebinar.topjava.Profiles.ACTIVE_DB;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(ACTIVE_DB)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = {"classpath:db/initDB.sql","classpath:db/populateTestDB.sql"}, config = @SqlConfig(encoding = "UTF-8"))
 abstract public class AbstractServiceTest {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractServiceTest.class);
 

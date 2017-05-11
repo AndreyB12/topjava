@@ -1,7 +1,7 @@
 DELETE FROM users;
 DELETE FROM user_roles;
 DELETE FROM meals;
-Begin;
+
 
 
 INSERT INTO users (name, email, password)
@@ -12,7 +12,7 @@ VALUES ('User', 'user@yandex.ru', 'password');
 INSERT INTO users (name, email, password)
 VALUES ('Admin', 'admin@gmail.com', 'admin');
 
-begin;
+
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100000),
