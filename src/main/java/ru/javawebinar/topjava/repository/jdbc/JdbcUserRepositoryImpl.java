@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class JdbcUserRepositoryImpl implements UserRepository {
 
-    private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
+  //  private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -87,54 +87,23 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
         List<User> users = jdbcTemplate.query("SELECT * FROM users AS u LEFT OUTER JOIN user_roles AS ur ON u.id=ur.user_id WHERE id=?", customUserExtractor, id);
         User user = DataAccessUtils.singleResult(users);
-       /* if (user == null) return null;
-
-        Map<Integer, Set<Role>> roles = jdbcTemplate.query("SELECT * FROM user_roles WHERE user_id=?"
-                , resultSetExtractor, id);
-        user.setRoles(roles.getOrDefault(user.getId(), null));*/
         return user;
 
     }
 
     @Override
     public User getByEmail(String email) {
-//        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         List<User> users = jdbcTemplate.query("SELECT * FROM users AS u LEFT OUTER JOIN user_roles AS ur ON u.id=ur.user_id WHERE email=?", customUserExtractor, email);
-        User user = DataAccessUtils.singleResult(users);
-      /*  if (user == null) return null;
-        Map<Integer, Set<Role>> roles = jdbcTemplate.query("SELECT * FROM user_roles WHERE user_id=?"
-                , resultSetExtractor, user.getId());
-
-        user.setRoles(roles.getOrDefault(user.getId(), null));*/
-        return user;
+        return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public List<User> getAll() {
-        // List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-
-        //Map<Integer, Set<Role>> roles = jdbcTemplate.query("SELECT * FROM user_roles"
-        //         , resultSetExtractor);
-        //users.forEach(user -> user.setRoles(roles.getOrDefault(user.getId(), null)));
-        //return users;
-        return jdbcTemplate.query("SELECT * FROM users AS u LEFT OUTER JOIN user_roles AS ur ON u.id=ur.user_id"
+        return jdbcTemplate.query("SELECT * FROM users AS u " +
+                        "LEFT OUTER JOIN user_roles AS ur ON u.id=ur.user_id"
                 , customUserExtractor);
     }
 
-
-    private ResultSetExtractor<Map<Integer, Set<Role>>> resultSetExtractor = rs -> {
-        Map<Integer, Set<Role>> roles = new HashMap<>();
-        while (rs.next()) {
-            Integer user = rs.getInt("user_id");
-            Role role = Role.valueOf(rs.getString("role"));
-            if (roles.containsKey(user)) roles.get(user).add(role);
-            else {
-                roles.put(user, new HashSet<>());
-                roles.get(user).add(role);
-            }
-        }
-        return roles;
-    };
 
     private ResultSetExtractor<List<User>> customUserExtractor = rs -> {
         Map<Integer, User> users = new HashMap<>();
@@ -143,7 +112,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             Integer id = rs.getInt("id");
             String name = rs.getString("name");
             String email = rs.getString("email");
-            String pswrd = rs.getString("password");
+            String password = rs.getString("password");
             Date registered = rs.getDate("registered");
             Boolean enabled = rs.getBoolean("enabled");
             int calories = rs.getInt("calories_per_day");
@@ -153,7 +122,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 u.addRole(role);
                 return u;
             });
-            users.computeIfAbsent(id, k -> new User(id, name, email, pswrd, registered, calories, enabled, role));
+            users.computeIfAbsent(id, k -> new User(id, name, email, password, registered, calories, enabled, role));
         }
         return users.values().stream()
                 .sorted((u1, u2) -> u1.getName().equals(u2.getName()) ? u1.getName().compareTo(u2.getName()) :
