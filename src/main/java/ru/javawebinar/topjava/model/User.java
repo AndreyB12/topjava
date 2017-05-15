@@ -49,6 +49,7 @@ public class User extends NamedEntity {
     @Column(name = "registered", columnDefinition = "timestamp default now()")
     private Date registered = new Date();
 
+
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -75,6 +76,11 @@ public class User extends NamedEntity {
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, DEFAULT_CALORIES_PER_DAY, true, EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String email, String password, Date registered, int caloriesPerDay, boolean enabled, Role role, Role... roles) {
+        this(id, name, email, password, caloriesPerDay, enabled, EnumSet.of(role, roles));
+        this.registered = registered;
     }
 
     public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled, Set<Role> roles) {
@@ -108,6 +114,15 @@ public class User extends NamedEntity {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        if (!roles.contains(role))
+            this.roles.add(role);
     }
 
     public int getCaloriesPerDay() {

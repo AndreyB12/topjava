@@ -15,7 +15,7 @@
     </c:choose>
     </h2>
     <hr>
-    <form method="post" action="meal/save">
+    <form method="post" action="save">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><spring:message code="meals.datetime"/>:</dt>

@@ -34,7 +34,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         service.evictCache();
 
-        if (isProfileActive("jpa") || isProfileActive("datajpa")) {
+        if (!isProfileActive("jdbc")) {
             if (jpaUtil == null)
                 jpaUtil = appCntx.getBean(JpaUtil.class);
             jpaUtil.clear2ndLevelHibernateCache();
