@@ -9,9 +9,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
-import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDateTime;
-import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
+import static ru.javawebinar.topjava.util.DateTimeUtil.*;
 
 /**
  * gkislin
@@ -22,7 +20,7 @@ public class DateTimeFormatters {
 
         @Override
         public LocalDate parse(String text, Locale locale) throws ParseException {
-            return parseLocalDate(text);
+            return text == null ? null : parseLocalDate(text);
         }
 
         @Override
@@ -35,7 +33,7 @@ public class DateTimeFormatters {
 
         @Override
         public LocalTime parse(String text, Locale locale) throws ParseException {
-            return parseLocalTime(text);
+            return text == null ? null : parseLocalTime(text);
         }
 
         @Override
@@ -49,11 +47,12 @@ public class DateTimeFormatters {
 
         @Override
         public LocalDateTime parse(String text, Locale locale) throws ParseException {
-            return parseLocalDateTime(text);
+            return text == null ? null : parseLocalDateTime(text);
         }
 
         @Override
         public String print(LocalDateTime lt, Locale locale) {
+
             return lt.format(DateTimeFormatter.ISO_LOCAL_TIME);
         }
     }
