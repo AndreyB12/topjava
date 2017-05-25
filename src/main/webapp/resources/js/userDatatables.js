@@ -41,3 +41,15 @@ $(function () {
     });
     makeEditable();
 });
+
+function userEnabled(id, enabled) {
+    $.ajax({
+        type: "POST",
+        cache: false,
+        url: ajaxUrl + id + "/enabled/" + enabled,
+        success: function () {
+            successNoty('Saved');
+        }
+    });
+    updateTable(ajaxDataUrl);
+}

@@ -41,6 +41,7 @@ public class User extends NamedEntity {
     @Length(min = 5)
     private String password;
 
+
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 

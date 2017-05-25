@@ -42,15 +42,15 @@ $(function () {
 
 function makeFilterForm() {
     $('#filterForm').submit(function () {
-        filter();
+        var form = $('#filterForm');
+        ajaxDataUrl = ajaxUrl + "filter?" + form.serialize();
+        updateTable(ajaxDataUrl);
         return false;
     });
 }
 
 function filter() {
-    var form = $('#filterForm');
-    ajaxDataUrl = ajaxUrl + "filter?" + form.serialize();
-    updateTable(ajaxDataUrl);
+
 }
 
 function clearFilter() {

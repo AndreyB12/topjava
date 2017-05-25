@@ -30,12 +30,16 @@ function deleteRow(id) {
 }
 
 function updateTable(url) {
-    $.get(url, function (data) {
-        datatableApi.clear();
-        $.each(data, function (key, item) {
-            datatableApi.row.add(item);
-        });
-        datatableApi.draw();
+    $.get({
+        url: url,
+        cache: false,
+        success: function (data) {
+            datatableApi.clear();
+            $.each(data, function (key, item) {
+                datatableApi.row.add(item);
+            });
+            datatableApi.draw();
+        }
     });
 }
 
