@@ -4,13 +4,15 @@ DELETE FROM meals;
 
 
 
-INSERT INTO users (name, email, password)
-VALUES ('User', 'user@yandex.ru', 'password');
+-- admin
+INSERT INTO users (name, email, password, calories_per_day)
+VALUES ('User', 'user@yandex.ru', '$2a$10$Sh0ZD2NFrzRRJJEKEWn8l.92ROEuzlVyzB9SV1AM8fdluPR0aC1ni', 2005);
 
 
 
-INSERT INTO users (name, email, password)
-VALUES ('Admin', 'admin@gmail.com', 'admin');
+-- password
+INSERT INTO users (name, email, password, calories_per_day)
+VALUES ('Admin', 'admin@gmail.com', '$2a$10$WejOLxVuXRpOgr4IlzQJ.eT4UcukNqHlAiOVZj1P/nmc8WbpMkiju', 1900);
 
 
 
