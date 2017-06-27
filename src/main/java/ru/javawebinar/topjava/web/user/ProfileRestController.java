@@ -18,6 +18,8 @@ public class ProfileRestController extends AbstractUserController {
         super(service);
     }
 
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User get() {
         return super.get(AuthorizedUser.id());

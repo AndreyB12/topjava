@@ -5,7 +5,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.javawebinar.topjava.AuthorizedUser;
@@ -13,6 +16,7 @@ import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.UserUtil;
 import ru.javawebinar.topjava.web.user.AbstractUserController;
+import ru.javawebinar.topjava.web.user.UserFormValidator;
 
 import javax.validation.Valid;
 
@@ -22,6 +26,16 @@ public class RootController extends AbstractUserController {
     @Autowired
     public RootController(UserService service) {
         super(service);
+    }
+
+    @Autowired
+    UserFormValidator userFormValidator;
+
+
+    //Set a form validator
+    @InitBinder("userTo")
+    protected void initUserToBinder(WebDataBinder binder) {
+        binder.setValidator(userFormValidator);
     }
 
     @GetMapping("/")
@@ -52,7 +66,7 @@ public class RootController extends AbstractUserController {
     }
 
     @PostMapping("/profile")
-    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
+    public String updateProfile(@ModelAttribute("userTo") @Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
         if (result.hasErrors()) {
             return "profile";
         } else {
@@ -71,7 +85,7 @@ public class RootController extends AbstractUserController {
     }
 
     @PostMapping("/register")
-    public String saveRegister(@Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
+    public String saveRegister(@ModelAttribute("userTo") @Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("register", true);
             return "profile";
