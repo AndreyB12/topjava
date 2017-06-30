@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
+import ru.javawebinar.topjava.util.UserUtil;
 
 import java.net.URI;
 import java.util.List;
@@ -35,6 +36,7 @@ public class AdminRestController extends AbstractUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(@RequestBody User user) {
+        super.checkEmail(UserUtil.asTo(user));
         User created = super.create(user);
 
 //        HttpHeaders httpHeaders = new HttpHeaders();
@@ -56,6 +58,7 @@ public class AdminRestController extends AbstractUserController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody User user, @PathVariable("id") int id) {
+        super.checkEmail(UserUtil.asTo(user));
         super.update(user, id);
     }
 

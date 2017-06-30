@@ -9,6 +9,7 @@
 
         <div class="collapse navbar-collapse">
             <form:form class="navbar-form navbar-right" action="logout" method="post">
+                <a href="?language=en">English</a>|<a href="?language=ru">Russian</a>
                 <sec:authorize access="isAuthenticated()">
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <a class="btn btn-info" href="users"><spring:message code="users.title"/></a>

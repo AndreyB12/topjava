@@ -52,6 +52,7 @@ public class RootController extends AbstractUserController {
 
     @GetMapping(value = "/login")
     public String login() {
+
         return "login";
     }
 

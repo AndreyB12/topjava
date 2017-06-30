@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
+import ru.javawebinar.topjava.util.exception.DuplicateRowConstraint;
 
 import java.util.List;
 
@@ -63,4 +64,8 @@ public abstract class AbstractUserController {
         log.info((enabled ? "enable " : "disable ") + id);
         service.enable(id, enabled);
     }
+
+    public void checkEmail(UserTo user){
+        if(!service.isEmailOk(user))
+            throw new DuplicateRowConstraint("User with this email already exists");}
 }

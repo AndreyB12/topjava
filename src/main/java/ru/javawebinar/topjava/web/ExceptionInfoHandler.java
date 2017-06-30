@@ -10,6 +10,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.util.ValidationUtil;
+import ru.javawebinar.topjava.util.exception.DuplicateRowConstraint;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -56,12 +57,12 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, new Exception(ValidationUtil.getErrorResponse(e.getBindingResult()).toString()), false);
     }
 
-   /* @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(DuplicateRowConstraint.class)
     @ResponseBody
-    public ErrorInfo handleError(HttpServletRequest req, MethodArgumentNotValidException e) {
-        return logAndGetErrorInfo(req, new Exception(ValidationUtil.getErrorResponse(e.getBindingResult()).toString()), false);
-    }*/
+    public ErrorInfo handleError(HttpServletRequest req, DuplicateRowConstraint e) {
+        return logAndGetErrorInfo(req, e, false);
+    }
 
     private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException) {
         Throwable rootCause = ValidationUtil.getRootCause(e);

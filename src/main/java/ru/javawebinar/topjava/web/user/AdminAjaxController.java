@@ -49,6 +49,7 @@ public class AdminAjaxController extends AbstractUserController {
         // TODO change to exception handler
         //     return ValidationUtil.getErrorResponse(result);
         //  }
+        super.checkEmail(userTo);
         if (userTo.isNew()) {
             super.create(UserUtil.createNewFromTo(userTo));
         } else {

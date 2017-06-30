@@ -6,7 +6,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import ru.javawebinar.topjava.AuthorizedUser;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
 
@@ -29,15 +28,10 @@ public class UserFormValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors, "email", "validation.isEmpty");
 
         UserTo user = (UserTo) o;
-        if(AuthorizedUser.safeGet()!=null) user.setId(AuthorizedUser.id());
-        User userInBase = null;
-        try {
-             userInBase = userService.getByEmail(user.getEmail());
-        } catch (Exception e) {
-        }
-        if ((user.isNew() && userInBase != null)
-                || (!user.isNew() && userInBase != null && !userInBase.getId().equals(user.getId()))) {
+        if (AuthorizedUser.safeGet() != null) user.setId(AuthorizedUser.id());
+
+        if (!userService.isEmailOk(user))
             errors.rejectValue("email", "validation.email.AlredyExist");
-        }
+
     }
 }

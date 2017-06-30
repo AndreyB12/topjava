@@ -50,6 +50,7 @@
                         <label for="name" class="control-label col-xs-3"><spring:message code="users.name"/></label>
 
                         <div class="col-xs-9">
+
                             <input type="text" class="form-control" id="name" name="name" placeholder="<spring:message code="users.name"/>">
                         </div>
                     </div>

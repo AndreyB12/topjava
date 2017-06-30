@@ -6,11 +6,11 @@ function makeEditable() {
         failNoty(jqXHR);
     });
     // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
-    $.ajaxSetup({ cache: false });
+    $.ajaxSetup({cache: false});
 
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    $(document).ajaxSend(function(e, xhr, options) {
+    $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
     });
 }
@@ -55,7 +55,12 @@ function save() {
             $('#editRow').modal('hide');
             updateTable();
             successNoty('common.saved');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+            alert(textStatus + ", " + errorThrown);
         }
+
     });
 }
 
@@ -82,7 +87,7 @@ function failNoty(jqXHR) {
     closeNoty();
     var errorInfo = $.parseJSON(jqXHR.responseText);
     failedNote = noty({
-        text: i18n['common.errorStatus'] + ': ' + jqXHR.status + '<br>'+ errorInfo.cause + '<br>' + errorInfo.detail,
+        text: i18n['common.errorStatus'] + ': ' + jqXHR.status + '<br>' + errorInfo.cause + '<br>' + errorInfo.detail,
         type: 'error',
         layout: 'bottomRight'
     });
@@ -97,7 +102,7 @@ function renderEditBtn(data, type, row) {
 
 function renderDeleteBtn(data, type, row) {
     if (type === 'display') {
-        return '<a onclick="deleteRow(' + row.id + ');">'+
+        return '<a onclick="deleteRow(' + row.id + ');">' +
             '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>';
     }
 }

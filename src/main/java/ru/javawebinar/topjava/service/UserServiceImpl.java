@@ -104,4 +104,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User getWithMeals(int id) {
         return checkNotFoundWithId(repository.getWithMeals(id), id);
     }
+
+    @Override
+    public Boolean isEmailOk(UserTo user) {
+        Assert.notNull(user, "user must not be null");
+        Assert.notNull(user.getEmail(), "email must not be null");
+        User userInBase = repository.getByEmail(user.getEmail());
+        if (userInBase == null) return true;
+        if (userInBase.getId().equals(user.getId())) return true;
+        return false;
+    }
 }
